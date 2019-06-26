@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		*{
+			margin:0;
+			padding: 0;
+			list-style: none;
+		}
+
+		.dropzone {
+			width: 200px;
+			height: 20px;
+			background: blueviolet;
+		}
+		.one,.tow,.three {
+			width: 200px;
+			background: blueviolet;
+			/*border:1px solid black;*/
+		}
+		li {
+			background: red;
+			height: 30px;
+			border-top:1px solid black;
+		}
+		.head {
+			background:rgb(99,99,99);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="dropzone" >
+		<div id="draggable">
+			This div is draggable
+		</div>
+	</div>
+	<div class="one" data-drag='true'>
+		<div  class="head" >第一</div>
+		<ul>
+			<li  data-drag='true'>one 1</li>
+			<li  data-drag='true'>one 2</li>
+			<li  data-drag='true'>one 3</li>
+		</ul>
+	</div>
+	<div class="tow" data-drag='true'>
+		<div class="head">第二</div>
+		<ul>
+			<li>tow 1</li>
+			<li>tow 2</li>
+			<li>tow 3</li>
+		</ul>
+	</div>
+	<div class="three" data-drag='true'>
+		<div class="head">第三</div>
+		<ul>
+			<li>three 1</li>
+			<li>three 2</li>
+			<li>three 3</li>
+		</ul>
+	</div>
+
+	<script type="text/javascript">
+		let odiv = document.querySelectorAll(".head")
+		odiv.forEach((item)=> {
+			let flag = true
+			item.addEventListener('click',function(event) {
+				// event.preventDefault()
+
+				let e  = event.target.nextElementSibling
+				if(flag) {
+					// e.style.visibility = 'hidden'
+					e.style.display = 'none'
+					flag = false
+				}else {
+					// e.style.visibility = null
+					e.style.display = 'block'
+					flag = true
+				}
+			})
+		})
+
+	</script>
+	<script type="text/javascript">
+		document.addEventListener('dblclick',function(event) {
+			let input  = document.createElement('input')
+			input.value  = event.target.innerText
+			event.target.innerText = null
+
+			event.target.appendChild(input)
+			input.focus()
+
+			let that = event
+			input.addEventListener('keyup',function(event) {
+				if(event.key === 'Enter') {
+					that.target.innerText = input.value
+				}
+			})
+		})
+
+
+
+		document.addEventListener('mousedown',function(event) {
+			let target;
+			if(event.target.dataset.drag) {
+				target = event.target;
+			}else {
+				if(event.target.parentNode.dataset.drag === 'true') {
+					target = event.target.parentNode
+				}	
+			}
+
+			if (target) {
+				target.setAttribute('draggable','true')
+				target.setAttribute('id','drag')
+			}
+			
+		},false)
+
+		document.addEventListener('mouseup',function(event) {
+			// console.log()
+			event.target.removeAttribute('draggable')
+			// event.target.removeAttribute('id')
+
+		},false)
+
+
+		let dragDom ;
+		document.addEventListener("dragstart",function(event){
+
+			dragDom = event.target
+			
+		})
+
+		document.addEventListener("drag",function(event) {
+			// console.log('drag')
+		},false)
+
+		document.addEventListener("dragend",function(event){
+			// console.log('dragend')
+		})
+
+
+
+		document.addEventListener("dragover",function(event) {
+
+			if(event.target === dragDom.parentNode || event.target.parentNode.tagName === 'UL') {
+				event.preventDefault();
+			}
+
+
+		})
+
+		document.addEventListener('dragleave',function() {
+			// console.log('dragleave')
+		})
+
+		document.addEventListener('drop',function(event) {
+			event.preventDefault()
+
+			let child = document.querySelector('#drag')
+
+			child.removeAttribute('draggable')
+			child.removeAttribute('id')
+
+			let copy = child.cloneNode(true)
+
+			// console.log('ok')
+			if(event.target.parentNode.tagName === 'UL') {
+			// console.log('ok')
+				event.target.parentNode.appendChild(copy)
+			}else {
+				event.target.appendChild(copy)
+			}
+
+	})
+</script>
+</body>
+
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.tema{
+			border:1px solid red;
+		}
+		.temb{
+			border:1px solid red;
+		}
+		.wrapper {
+			border:1px solid red;
+			/*height: 100px;*/
+		}
+		.ohter {
+			border:1px solid black;
+			height: 100px;
+		}
+	</style>
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<!-- 
+	<p id="p1" draggable="true" ondragstart="dragstart_handler(event);">This element is draggable.</p>
+	<div id="target" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">Drop Zone</div> -->
+
+	<div id="app">
+		<wrapper></wrapper>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/vue-router@3.0.6/dist/vue-router.js"></script>
+	<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+	<script src="../dist/bundle.js"></script>
+	<script type="text/javascript">
+		var ComponentA = {
+			template:'<div class="tema" id="ca" draggable="true" @dragstart="dragstart"><ul><li>a</li><li>b</li><li>c</li></ul></div>',
+			methods:{
+				dragstart(evnent) {
+					evnent.dataTransfer.setData("text/plain", evnent.target.id);
+					evnent.dropEffect = "move";
+				}
+
+			}
+		}
+
+		var ComponentB = { 
+			template:'<div class="temb"><ul><li>a</li><li>b</li><li>c</li></ul></div>'
+		}
+
+
+
+
+
+
+
+
+		  //   <el-menu
+    //   default-active="2"
+    //   class="el-menu-vertical-demo"
+    //   @open="handleOpen"
+    //   @close="handleClose">
+    //   <el-submenu index="1">
+    //     <template slot="title">
+    //       <i class="el-icon-location"></i>
+    //       <span>导航一</span>
+    //     </template>
+    //     <el-menu-item-group>
+    //       <template slot="title">分组一</template>
+    //       <el-menu-item index="1-1">选项1</el-menu-item>
+    //       <el-menu-item index="1-2">选项2</el-menu-item>
+    //     </el-menu-item-group>
+    //     <el-menu-item-group title="分组2">
+    //       <el-menu-item index="1-3">选项3</el-menu-item>
+    //     </el-menu-item-group>
+    //     <el-submenu index="1-4">
+    //       <template slot="title">选项4</template>
+    //       <el-menu-item index="1-4-1">选项1</el-menu-item>
+    //     </el-submenu>
+    //   </el-submenu>
+    //   <el-menu-item index="2">
+    //     <i class="el-icon-menu"></i>
+    //     <span slot="title">导航二</span>
+    //   </el-menu-item>
+    //   <el-menu-item index="3" disabled>
+    //     <i class="el-icon-document"></i>
+    //     <span slot="title">导航三</span>
+    //   </el-menu-item>
+    //   <el-menu-item index="4">
+    //     <i class="el-icon-setting"></i>
+    //     <span slot="title">导航四</span>
+    //   </el-menu-item>
+    // </el-menu>
+
+
+		var ComponentC = { 
+			template:'<el-menu default-active="2" class="el-menu-vertical-demo"> <el-submenu index="1" data-drag="true"> <template slot="title"> <i class="el-icon-location"></i> <span>导航一</span></template> <el-menu-item-group><template slot="title">分组一</template><el-menu-item index="1-1">选项1</el-menu-item><el-menu-item index="1-2">选项2</el-menu-item></el-menu-item-group> <el-menu-item-group title="分组2"><el-menu-item index="1-3">选项3</el-menu-item></el-menu-item-group><el-submenu index="1-4"><template slot="title">选项4</template><el-menu-item index="1-4-1">选项1</el-menu-item></el-submenu></el-submenu><el-menu-item index="2"><i class="el-icon-menu"></i><span slot="title">导航二</span> </el-menu-item><el-menu-item index="3" disabled> <i class="el-icon-document"></i> <span slot="title">导航三</span></el-menu-item><el-menu-item index="4"><i class="el-icon-setting"></i><span slot="title">导航四</span> </el-menu-item> </el-menu>'
+		}
+
+
+		//router page
+
+		var PageA = {
+			template:'<div>PageA</div>',
+		}
+		var PageB = {
+			template:'<div>PageB</div>'
+		}
+		var PageC = {
+			template:'<div>PageC</div>'
+		}
+		
+		// wrapper
+		var Wrapper = {
+			template:'<div class="wrapper" @drop="drop" @dragover="over"v-test><componenta></componenta><componentb></componentb><componentc></componentc></div>',
+			methods:{
+				drop(event) {
+					event.preventDefault();
+					var data = event.dataTransfer.getData("text");
+		 			event.target.appendChild(document.getElementById(data));
+
+				},
+				over(event) {
+					event.preventDefault();
+					console.log(event.target)
+					event.dataTransfer.dropEffect = "move"
+ 				}
+ 			},
+ 			components:{
+ 				'componenta': ComponentA,
+ 				'componentb': ComponentB,
+ 				'componentc': ComponentC
+ 			},
+ 			mounted() {
+ 				console.log(this.$el.childNodes)
+ 				// console.log(this.$el.children[1])
+ 				// this.$el.removeChild(this.$el.children[1])
+ 				// console.log(this.$el.children)
+
+ 			}
+ 		}
+
+ 		const routes = [
+		  { path: '/', component: PageA },
+		  { path: '/B', component: PageB },
+		  { path: '/C', component: PageC }
+		]
+
+
+		const router = new VueRouter({
+		 	 routes 
+		})
+
+		Vue.use(Iconc)
+ 		var app = new Vue({
+ 			el: '#app',
+ 			router,
+ 			components:{
+ 				'wrapper':Wrapper,
+ 			}
+ 		})
+ 	</script>
+
+
+
+ 		<script type="text/javascript">
+		document.addEventListener('dblclick',function(event) {
+			let input  = document.createElement('input')
+			input.value  = event.target.innerText
+			event.target.innerText = null
+
+			event.target.appendChild(input)
+			input.focus()
+
+			let that = event
+			input.addEventListener('keyup',function(event) {
+				if(event.key === 'Enter') {
+					that.target.innerText = input.value
+				}
+			})
+		})
+
+
+
+		document.addEventListener('mousedown',function(event) {
+			let target;
+			if(event.target.dataset.drag) {
+				target = event.target;
+			}else {
+				if(event.target.parentNode.dataset.drag === 'true') {
+					target = event.target.parentNode
+				}	
+			}
+
+			if (target) {
+				target.setAttribute('draggable','true')
+				target.setAttribute('id','drag')
+			}
+			
+		},false)
+
+		document.addEventListener('mouseup',function(event) {
+			// console.log()
+			event.target.removeAttribute('draggable')
+			// event.target.removeAttribute('id')
+
+		},false)
+
+
+		let dragDom ;
+		document.addEventListener("dragstart",function(event){
+
+			dragDom = event.target
+			// console.log('dragstart')
+			// console.log(event.target)
+			// event.target
+			// event.dataTransfer.setData('text','event.target')
+			// console.log(event.dataTransfer.getData('text'))
+		})
+
+		document.addEventListener("drag",function(event) {
+			// console.log('drag')
+		},false)
+
+		document.addEventListener("dragend",function(event){
+			// console.log('dragend')
+		})
+
+
+		// document.addEventListener("dragenter",function(event) {
+		// 	// event.preventDefault();
+		// 	console.log(event)
+		// }) 
+
+		document.addEventListener("dragover",function(event) {
+
+			// console.log(event.dataTransfer.getData('text'))
+
+			// console.log(event.target.parentNode.tagName)
+
+			// event.preventDefault();
+			// // console.log(dragDom.parentNode)
+
+			// console.log(event.target === dragDom.parentNode)
+
+			if(event.target === dragDom.parentNode || event.target.parentNode.tagName === 'UL') {
+				event.preventDefault();
+			}
+
+
+			// ul || event.target.parentNode.tagName === 'UL'
+
+
+			// event.target.style.border= '1px solid red'
+		})
+
+		document.addEventListener('dragleave',function() {
+			// console.log('dragleave')
+
+			event.target.style.border= null
+		})
+
+
+
+		document.addEventListener('drop',function(event) {
+			event.preventDefault()
+		
+			let child = document.querySelector('#drag')
+
+
+			child.removeAttribute('draggable')
+			child.removeAttribute('id')
+
+			let copy = child.cloneNode(true)
+
+			// console.log('ok')
+			if(event.target.parentNode.tagName === 'UL') {
+			// console.log('ok')
+				event.target.parentNode.appendChild(copy)
+			}else {
+				event.target.appendChild(copy)
+			}
+			
+		})
+	</script>
+
+</body>
+</html>

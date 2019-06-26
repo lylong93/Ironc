@@ -2,10 +2,23 @@ import Vue from 'vue'
 
 var Iconc = {}
 
-Iconc.install =()=> {
-    // Vue.testMethod = function () {
-    //     console.log('myPlugin')
-    //   }
+Iconc.install =(Vue)=> {
+	// Vue.mixin({
+ //    mounted: function () {
+ //      // if(this._uid === 0) {
+ //      	console.log(this.$el)
+ //      	// this._render = 'hello'
+ //      	// console.log(this)
+ //      	// this.$forceUpdate()
+ //      // }
+ //    }
+ //  })
+// Vue.directive('test', {
+//   inserted: function (el,binding,vnode) {
+//     // console.log(el.innerHTML)
+
+//   }
+// })
 }
 
-export default Iconc;
+window.Iconc= Iconc
