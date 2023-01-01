@@ -22,9 +22,9 @@
     "@babel/parser": "^7.4.5",
     "express": "^4.17.1",
     "vue": "^2.6.10",
-    "webpack": "^4.35.0"
+    "webpack": "^5.75.0"
   },
   "devDependencies": {
-    "webpack-cli": "^3.3.5"
+    "webpack-cli": "^5.0.1"
   }
 }
